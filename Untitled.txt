@@ -1,0 +1,150 @@
+//insert single document
+myDatabase> db.users.insertOne({name: "xyz", age: 22 })
+{
+  acknowledged: true,
+  insertedId: ObjectId("64ce5dd5bfeb536828d320ce")
+}
+
+
+//upadte multiple document entry 
+myDatabase>  db.users.insertMany([{name: "John", age:25}, {name: "Emily", age: 32},{name: "xyz", age: 30 }, {name:"Michael", age:49}, {name: "Navneet", age: 28}, {name: "Nothing", age: 26}])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId("64ce582cbfeb536828d320c9"),
+    '1': ObjectId("64ce582cbfeb536828d320ca"),
+    '2': ObjectId("64ce582cbfeb536828d320cb"),
+    '3': ObjectId("64ce582cbfeb536828d320cc"),
+    '4': ObjectId("64ce582cbfeb536828d320cd"),
+    '5': ObjectId("64ce5dd5bfeb536828d320ce")
+  }
+}
+
+
+//to find > then age of 30 
+myDatabase> db.users.find({age: {$gt:30} })
+[
+  { _id: ObjectId("64ce582cbfeb536828d320ca"), name: 'Emily', age: 32 },
+  {
+    _id: ObjectId("64ce582cbfeb536828d320cb"),
+    name: 'Michael',
+    age: 49
+  }
+]
+
+
+// count the > age of 30 
+myDatabase> db.users.find({age: {$gt:30} }).count()
+2
+
+
+// count the >= age of 30 
+myDatabase>  db.users.find({age: {$gte:30} })
+[
+  { _id: ObjectId("64ce582cbfeb536828d320ca"), name: 'Emily', age: 32 },
+  {
+    _id: ObjectId("64ce582cbfeb536828d320cb"),
+    name: 'Michael',
+    age: 49
+  },
+  { _id: ObjectId("64ce5dd5bfeb536828d320ce"), name: 'xyz', age: 30 }
+]
+
+
+
+// count the < age of 30
+myDatabase> db.users.find({age: {$lt:30} })
+[
+  { _id: ObjectId("64ce582cbfeb536828d320c9"), name: 'John', age: 25 },
+  {
+    _id: ObjectId("64ce582cbfeb536828d320cc"),
+    name: 'Navneet',
+    age: 28
+  },
+  {
+    _id: ObjectId("64ce582cbfeb536828d320cd"),
+    name: 'Nothing',
+    age: 26
+  }
+]
+
+
+
+// count the <= age of 30
+myDatabase>  db.users.find({age: {$lte:30} })
+[
+  { _id: ObjectId("64ce582cbfeb536828d320c9"), name: 'John', age: 25 },
+  {
+    _id: ObjectId("64ce582cbfeb536828d320cc"),
+    name: 'Navneet',
+    age: 28
+  },
+  {
+    _id: ObjectId("64ce582cbfeb536828d320cd"),
+    name: 'Nothing',
+    age: 26
+  },
+  { _id: ObjectId("64ce5dd5bfeb536828d320ce"), name: 'xyz', age: 30 }
+]
+
+
+/// To find the documents in ranges
+myDatabase> db.users.find({$or: [{age:26}, {age:35} ] })
+[
+  {
+    _id: ObjectId("64ce582cbfeb536828d320cd"),
+    name: 'Nothing',
+    age: 26
+  }
+]
+
+myDatabase> db.users.find({$or: [{age:{$lt:40}}, {age:35} ] })
+[
+  { _id: ObjectId("64ce582cbfeb536828d320c9"), name: 'John', age: 25 },
+  { _id: ObjectId("64ce582cbfeb536828d320ca"), name: 'Emily', age: 32 },
+  {
+    _id: ObjectId("64ce582cbfeb536828d320cc"),
+    name: 'Navneet',
+    age: 28
+  },
+  {
+    _id: ObjectId("64ce582cbfeb536828d320cd"),
+    name: 'Nothing',
+    age: 26
+  },
+  { _id: ObjectId("64ce5dd5bfeb536828d320ce"), name: 'xyz', age: 30 }
+]
+
+
+
+
+//to find the given particular range
+myDatabase> db.users.find({age:{$in: [25,28,40]}})
+[
+  { _id: ObjectId("64ce582cbfeb536828d320c9"), name: 'John', age: 25 },
+  {
+    _id: ObjectId("64ce582cbfeb536828d320cc"),
+    name: 'Navneet',
+    age: 28
+  }
+]
+
+
+
+//to find the not given in particular in range
+myDatabase>  db.users.find({age:{$nin: [25,28,40]}})
+[
+  { _id: ObjectId("64ce5762bfeb536828d320c8") },
+  { _id: ObjectId("64ce582cbfeb536828d320ca"), name: 'Emily', age: 32 },
+  {
+    _id: ObjectId("64ce582cbfeb536828d320cb"),
+    name: 'Michael',
+    age: 49
+  },
+  {
+    _id: ObjectId("64ce582cbfeb536828d320cd"),
+    name: 'Nothing',
+    age: 26
+  },
+  { _id: ObjectId("64ce5dd5bfeb536828d320ce"), name: 'xyz', age: 30 }
+]
